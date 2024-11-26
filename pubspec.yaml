@@ -1,0 +1,26 @@
+name: mobile_report
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment: 
+  sdk: '>=3.4.1 <4.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.6
+  get: 4.6.6
+  velocity_x: 4.2.1
+  google_fonts: 6.2.1
+  getwidget: 4.0.0
+  get_storage: 2.1.1
+  image_picker: 1.1.2
+  flutter: 
+    sdk: flutter
+
+dev_dependencies: 
+  flutter_lints: ^3.0.0
+  flutter_test: 
+    sdk: flutter
+
+flutter: 
+  uses-material-design: true
+
