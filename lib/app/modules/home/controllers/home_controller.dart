@@ -32,6 +32,13 @@ class HomeController extends GetxController {
 
   Future setupProjects() async {
     final dio = Dio();
+
+    dio.interceptors.add(InterceptorsWrapper(
+      onError: (DioException exception, ErrorInterceptorHandler handler){
+        print("exception: $exception");
+      }
+    ));
+
     try{
       print("Authorization token ${auth.getToken()}");
       final response = await dio.get("https://traceagri.com/fr/api/projects/", options: Options(headers: {

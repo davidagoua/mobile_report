@@ -81,14 +81,19 @@ class ProducteurFormController extends GetxController {
     }
   }
   Future<void> setupCoops() async {
-    final dio = Dio();
-    final response = await dio.get("https://traceagri.com/fr/api/cooperatives/");
-    if(response.statusCode == 200){
-      print(response.data);
-      print(response.data.toString());
-      projects.value = response.data;
-      // print(" countries ${countries.value}");
+    try{
+      final dio = Dio();
+      final response = await dio.get("https://traceagri.com/fr/api/cooperatives/");
+      if(response.statusCode == 200){
+        print(response.data);
+        print(response.data.toString());
+        projects.value = response.data;
+        // print(" countries ${countries.value}");
+      }
+    }catch(e){
+      print("erreur lors de la recuperation des coops $e");
     }
   }
+    
 
 }

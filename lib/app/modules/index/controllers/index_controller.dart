@@ -11,6 +11,7 @@ class IndexController extends GetxController {
   final auth = Get.find<AuthController>();
   final loading = false.obs;
   final error = "".obs;
+  final showPassword = false.obs;
 
 
   validerEtEnvoyer() async {
@@ -18,6 +19,7 @@ class IndexController extends GetxController {
       loading.value = true;
       if (formKey.currentState?.validate() ?? false) {
         final client = Dio();
+        client.options = BaseOptions(receiveDataWhenStatusError: true);
         final response = await client.post("https://traceagri.com/fr/auth/tablette/token/login/", data: {
           "username": nom_controller.text,
           "password": password_controller.text
@@ -31,10 +33,11 @@ class IndexController extends GetxController {
         print(response.data);
 
       } else {
-        print("Formulaire invalide");
+        error("Formulaire invalide");
       }
     } catch (e) {
       print("Erreur lors de la connexion: $e");
+      error("Email ou mot de passe incorrect !");
     }finally{
       loading.value = false;
     }

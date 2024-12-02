@@ -1,0 +1,18 @@
+{
+    "code": "Y1TIC38",
+    "nom": "Parcelle Christian",
+    "status": "En projet",
+    "carracteristic": null,
+    "culture": [
+        {
+            "value": "Hevea"
+        }
+    ],
+    "affectations": "",
+    "images": null,
+    "producteur": 151,
+    "localite": null,
+    "projet": null,
+    "culture_perenne": [],
+    "culture_saisonniere": []
+}
