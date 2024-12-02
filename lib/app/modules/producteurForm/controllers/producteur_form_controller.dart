@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:mobile_report/app/data/models/producteur_model.dart';
 import 'package:mobile_report/app/data/providers/producteur_provider.dart';
+import 'package:dio/dio.dart';
 // import 'package:image_picker/image_picker.dart';
 
 class ProducteurFormController extends GetxController {
@@ -15,6 +16,7 @@ class ProducteurFormController extends GetxController {
   final telephone_controller = TextEditingController();
   final date_naissance_controller = TextEditingController();
   final lieu_naissance_controller = TextEditingController();
+  final RxList projects = [].obs;
   //Rx<XFile?>? photo;
 
   final cooperative_controller = TextEditingController();
@@ -64,6 +66,17 @@ class ProducteurFormController extends GetxController {
   void pickImage() async{
     // final ImagePicker picker = ImagePicker();
     //photo!.value = await picker.pickImage(source: ImageSource.camera);
+  }
+
+  Future<void> setupProjects() async {
+    final dio = Dio();
+    final response = await dio.get("https://traceagri.com/fr/api/projects/");
+    if(response.statusCode == 200){
+      print(response.data);
+      print(response.data.toString());
+      projects.value = response.data;
+      // print(" countries ${countries.value}");
+    }
   }
 
 }

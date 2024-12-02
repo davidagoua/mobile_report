@@ -13,6 +13,7 @@ dependencies:
   getwidget: 4.0.0
   get_storage: 2.1.1
   image_picker: 1.1.2
+  dio: 5.7.0
   flutter: 
     sdk: flutter
 
