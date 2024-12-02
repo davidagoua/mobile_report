@@ -26,7 +26,7 @@ void main() {
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Application",
-      initialRoute: AppPages.INITIAL,
+      initialRoute: initialPage,
       getPages: AppPages.routes,
       theme: ThemeData(
         primaryColor: Colors.green[800]
