@@ -225,6 +225,19 @@ class ProducteurFormView extends GetView<ProducteurFormController> {
                   ),
                 ),
               ]),
+              Obx(()=>
+                DropdownButtonFormField<String>(
+                  decoration: getTFStyle('Coopérative'),
+                  items: controller.coops.map((coop) {
+                    return DropdownMenuItem<String>(
+                      value: coop.nom,
+                      child: Text(coop.nom),
+                    );
+                  }).toList(),
+                  onChanged: (value) => controller.cooperative_controller.text = value!,
+                  validator: (value) => value == null ? 'Veuillez sélectionner une coopérative' : null,
+                ),
+              ),
               GFButton(
                 borderShape: ContinuousRectangleBorder(),
                 size: GFSize.LARGE,

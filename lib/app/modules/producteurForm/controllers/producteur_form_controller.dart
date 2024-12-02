@@ -17,6 +17,7 @@ class ProducteurFormController extends GetxController {
   final date_naissance_controller = TextEditingController();
   final lieu_naissance_controller = TextEditingController();
   final RxList projects = [].obs;
+  final RxList coops = [].obs;
   //Rx<XFile?>? photo;
 
   final cooperative_controller = TextEditingController();
@@ -49,8 +50,9 @@ class ProducteurFormController extends GetxController {
     }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    await setupCoops();
   }
 
   @override
@@ -71,6 +73,16 @@ class ProducteurFormController extends GetxController {
   Future<void> setupProjects() async {
     final dio = Dio();
     final response = await dio.get("https://traceagri.com/fr/api/projects/");
+    if(response.statusCode == 200){
+      print(response.data);
+      print(response.data.toString());
+      projects.value = response.data;
+      // print(" countries ${countries.value}");
+    }
+  }
+  Future<void> setupCoops() async {
+    final dio = Dio();
+    final response = await dio.get("https://traceagri.com/fr/api/cooperatives/");
     if(response.statusCode == 200){
       print(response.data);
       print(response.data.toString());
