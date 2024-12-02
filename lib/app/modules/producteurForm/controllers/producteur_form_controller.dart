@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:mobile_report/app/data/models/producteur_model.dart';
+import 'package:mobile_report/app/data/providers/producteur_provider.dart';
+// import 'package:image_picker/image_picker.dart';
 
 class ProducteurFormController extends GetxController {
 
@@ -8,12 +11,40 @@ class ProducteurFormController extends GetxController {
 
   final nom_controller = TextEditingController();
   final prenoms_controller = TextEditingController();
-  final sexe_controller = ''.obs;
+  final Rx<Genre?> sexe_controller = Genre.HOMME.obs;
   final telephone_controller = TextEditingController();
   final date_naissance_controller = TextEditingController();
   final lieu_naissance_controller = TextEditingController();
-  final phot_controller = TextEditingController();
+  //Rx<XFile?>? photo;
+
   final cooperative_controller = TextEditingController();
+
+
+  void validerEtEnvoyer() async {
+        if (formKey.currentState?.validate() ?? false) {
+            final producteur = Producteur(
+                nom: nom_controller.text,
+                prenom: prenoms_controller.text,
+                sexe: sexe_controller.value,
+                telephone: telephone_controller.text,
+                dateNaissance: DateTime.parse(date_naissance_controller.text), // Assurez-vous que le format est correct
+                lieuNaissance: lieu_naissance_controller.text,
+                cooperative: int.tryParse(cooperative_controller.text), // Assurez-vous que c'est un entier
+            );
+
+            final provider = ProducteurProvider();
+            final response = await provider.postProducteur(producteur);
+
+            if (response.isOk) {
+                print("Producteur ajouté avec succès");
+            } else {
+                print("Erreur lors de l'ajout du producteur: ${response.statusText} ${response.request!.url}");
+            }
+        } else {
+            // Gérer les erreurs de validation
+            print("Le formulaire n'est pas valide");
+        }
+    }
 
   @override
   void onInit() {
@@ -28,6 +59,11 @@ class ProducteurFormController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void pickImage() async{
+    // final ImagePicker picker = ImagePicker();
+    //photo!.value = await picker.pickImage(source: ImageSource.camera);
   }
 
 }

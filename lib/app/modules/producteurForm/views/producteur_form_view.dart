@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:velocity_x/velocity_x.dart';
-
+import 'package:mobile_report/app/data/models/producteur_model.dart';
 import '../controllers/producteur_form_controller.dart';
 
 
-
-enum Genre {HOMME, FEMME}
 
 
 class ProducteurFormView extends GetView<ProducteurFormController> {
@@ -21,6 +19,7 @@ class ProducteurFormView extends GetView<ProducteurFormController> {
         title: const Text('Ajouter un producteur'),
         centerTitle: true,
       ),
+      /*
       body: Form(
         key: controller.formKey,
         child: VStack([
@@ -150,6 +149,95 @@ class ProducteurFormView extends GetView<ProducteurFormController> {
             ).expand(),
           ], spacing: 5,)
         ]).scrollVertical().p(25),
+      ),
+      */
+      body: Form(
+        key: controller.formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: VStack(spacing: 10, [
+              HStack([
+                SizedBox(
+                  width: Get.width / 2.3,
+                  child: TextFormField(
+                    decoration: getTFStyle('Nom'),
+                    controller: controller.nom_controller,
+                    validator: (value) => value!.isEmpty ? 'Veuillez entrer un nom' : null,
+                  ),
+                ),
+                Spacer(),
+                SizedBox(
+                  width: Get.width / 2.3,
+                  child: TextFormField(
+                    decoration: getTFStyle('Prénom'),
+                    controller: controller.prenoms_controller,
+                    validator: (value) => value!.isEmpty ? 'Veuillez entrer un prénom' : null,
+                  ),
+                )
+              ]),
+              DropdownButtonFormField<Genre>(
+                decoration: getTFStyle('Sexe'),
+                items: Genre.values.map((Genre genre) {
+                  return DropdownMenuItem<Genre>(
+                    value: genre,
+                    child: Text(genre.toString().split('.').last),
+                  );
+                }).toList(),
+                onChanged: (value) => controller.sexe_controller.value = value,
+                validator: (value) => value == null ? 'Veuillez sélectionner un sexe' : null,
+              ),
+              TextFormField(
+                keyboardType: TextInputType.numberWithOptions(),
+                decoration: getTFStyle('Téléphone'),
+                controller: controller.telephone_controller,
+                validator: (value) => value!.isEmpty ? 'Veuillez entrer un numéro de téléphone' : null,
+              ),
+              HStack([
+                SizedBox(
+                  width: Get.width * 1/2.3,
+                  child: TextFormField(
+                    controller: controller.date_naissance_controller,
+                    decoration: getTFStyle('Date de Naissance'),
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now(),
+                      );
+                      if (pickedDate != null) {
+                        
+                        controller.date_naissance_controller.text = pickedDate.toString();
+                      }
+                    },
+                  
+                    readOnly: true,
+                    validator: (value) => value == null ? 'Veuillez sélectionner une date' : null,
+                  )),
+                
+                Spacer(),
+                SizedBox(
+                  width: Get.width * 1/2.3,
+                  child: TextFormField(
+                    decoration: getTFStyle('Lieu de Naissance'),
+                    controller: controller.lieu_naissance_controller,
+                    validator: (value) => value!.isEmpty ? 'Veuillez entrer un lieu de naissance' : null,
+                  ),
+                ),
+              ]),
+              GFButton(
+                borderShape: ContinuousRectangleBorder(),
+                size: GFSize.LARGE,
+                blockButton: true,
+                onPressed: controller.validerEtEnvoyer,
+                color: Theme.of(context).primaryColor,
+                child: "Enrégistrer".text.make().pSymmetric(h: 3),
+              )
+              // Ajoutez des champs pour photo, cooperative et projet si nécessaire
+              
+            ],
+          ),
+        ),
       ),
     );
   }
