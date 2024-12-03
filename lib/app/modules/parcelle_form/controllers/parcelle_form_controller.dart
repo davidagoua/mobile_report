@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile_report/app/data/db_provider.dart';
 // import 'package:location/location.dart';
 
 
@@ -16,6 +17,8 @@ class ParcelleFormController extends GetxController {
   final carracteristic = TextEditingController();
   // LocationData? locationData;
   XFile? image;
+
+  final DbProvider db = Get.find<DbProvider>();
   
 
 
@@ -73,6 +76,7 @@ class ParcelleFormController extends GetxController {
   void validerEtEnvoyer() {
     if (formKey.currentState?.validate() ?? false) {
       print("Validation du formulaire");
+      
     } else {
       print("Le formulaire n'est pas valide");
     }

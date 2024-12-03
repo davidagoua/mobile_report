@@ -65,11 +65,12 @@ class DetailProjectView extends GetView<DetailProjectController> {
             itemCount: controller.producteurs.length,
             itemBuilder: (context, index){
               return ListTile(
+                leading: Container(child: Icon(Icons.verified_user)).card.green800.make(),
                 onTap: ()=> Get.toNamed(Routes.PARCELLE_FORM, arguments: {'producteur':controller.producteurs[index], 'project': controller.project}),
                 title: Text(controller.producteurs[index].nom! + " " + controller.producteurs[index].prenom!),
                 subtitle: Text(controller.producteurs[index].telephone! + " | " + controller.producteurs[index].cooperative.toString()),
                 trailing: Icon(Icons.arrow_forward_ios),
-              );
+              ).card.make();
             },
           ))
         )
