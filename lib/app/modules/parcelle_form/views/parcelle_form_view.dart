@@ -21,53 +21,47 @@ class ParcelleFormView extends GetView<ParcelleFormController> {
           key: controller.formKey,
           child: VStack([
             TextFormField(
-                decoration: InputDecoration(labelText: 'Code'),
+                decoration: getTFStyle('Code'),
                 controller: controller.code,
                 validator: (value) => value!.isEmpty ? 'Veuillez entrer un code' : null,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Nom'),
+                decoration: getTFStyle('Nom'),
                 controller: controller.nom,
                 validator: (value) => value!.isEmpty ? 'Veuillez entrer un nom' : null,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Statut'),
+                decoration: getTFStyle('Statut'),
                 controller: controller.status,
                 validator: (value) => value!.isEmpty ? 'Veuillez entrer un statut' : null,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Caractéristique'),
+                decoration: getTFStyle('Caractéristique'),
                 controller: controller.carracteristic,
                 validator: (value) => value!.isEmpty ? 'Veuillez entrer une caractéristique' : null,
               ),
               // Ajoutez un champ pour la culture
+
               TextFormField(
-                decoration: InputDecoration(labelText: 'Culture (séparées par des virgules)'),
-                onSaved: (value) {
-                  if (value != null) {
-                    culture = value.split(',').map((e) => Culture(value: e.trim())).toList();
-                  }
-                },
-                validator: (value) => value!.isEmpty ? 'Veuillez entrer une culture' : null,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Affectations'),
+                decoration: getTFStyle('Affectations'),
                 controller: controller.affectations,
                 validator: (value) => value!.isEmpty ? 'Veuillez entrer des affectations' : null,
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Images'),
-                onSaved: (value) => images = value,
-                validator: (value) => value!.isEmpty ? 'Veuillez entrer des images' : null,
-              ),
-              
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Localité'),
-                onSaved: (value) => localite = value,
-                validator: (value) => value!.isEmpty ? 'Veuillez entrer une localité' : null,
-              ),
+              HStack([
+                GFButton(
+                  color: Vx.green800,
+                  onPressed: controller.pickImage,
+                  child: "Prendre une photo".text.make(),
+                ),
+                GFButton(
+                  color: Vx.green800,
+                  onPressed: controller.getLocation,
+                  child: "Obtenir la localisation".text.make(),
+                ),
+              ], alignment: MainAxisAlignment.spaceAround, spacing: 10,),
               
               GFButton(
+                color: Vx.green800,
                 size: GFSize.LARGE,
                 blockButton: true,
                 fullWidthButton: true,
@@ -76,9 +70,16 @@ class ParcelleFormView extends GetView<ParcelleFormController> {
                 },
                 child: Text('Soumettre'),
               ),
-          ]),
+          ], spacing: 10,).p(15),
         )
-      ]),
+      ]).scrollVertical(),
+    );
+  }
+
+  InputDecoration getTFStyle(String label, {bool? isObscure = false}){
+    return InputDecoration(
+        label: "${label}".text.make(),
+        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.zero))
     );
   }
 }

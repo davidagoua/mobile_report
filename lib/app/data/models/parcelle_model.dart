@@ -1,16 +1,23 @@
+import 'package:mobile_report/objectbox.g.dart';
+
+@Entity()
 class Parcelle {
+
+  @Id() int? id;
   String? code;
   String? nom;
   String? status;
-  dynamic carracteristic;
-  List<Culture>? culture;
+  List<String>? carracteristic;
+  List<String>? culture;
   String? affectations;
   dynamic images;
   int? producteur;
   dynamic localite;
-  dynamic projet;
-  List<Null>? culturePerenne;
-  List<Null>? cultureSaisonniere;
+  int? projet;
+
+
+  List<String>? culturePerenne;
+  List<String>? cultureSaisonniere;
 
   Parcelle(
       {this.code,
@@ -32,9 +39,9 @@ class Parcelle {
     status = json['status'];
     carracteristic = json['carracteristic'];
     if (json['culture'] != null) {
-      culture = <Culture>[];
+      culture = <String>[];
       json['culture'].forEach((v) {
-        culture?.add(Culture.fromJson(v));
+        culture?.add(v);
       });
     }
     affectations = json['affectations'];
@@ -43,15 +50,15 @@ class Parcelle {
     localite = json['localite'];
     projet = json['projet'];
     if (json['culture_perenne'] != null) {
-      culturePerenne = <Null>[];
+      culturePerenne = <String>[];
       json['culture_perenne'].forEach((v) {
-        culturePerenne?.add(Null.fromJson(v));
+        culturePerenne?.add(v);
       });
     }
     if (json['culture_saisonniere'] != null) {
-      cultureSaisonniere = <Null>[];
+      cultureSaisonniere = <String>[];
       json['culture_saisonniere'].forEach((v) {
-        cultureSaisonniere?.add(Null.fromJson(v));
+        cultureSaisonniere?.add(v);
       });
     }
   }
@@ -63,7 +70,7 @@ class Parcelle {
     data['status'] = status;
     data['carracteristic'] = carracteristic;
     if (culture != null) {
-      data['culture'] = culture?.map((v) => v.toJson()).toList();
+      data['culture'] = culture?.map((v) => v).toList();
     }
     data['affectations'] = affectations;
     data['images'] = images;
@@ -71,11 +78,11 @@ class Parcelle {
     data['localite'] = localite;
     data['projet'] = projet;
     if (culturePerenne != null) {
-      data['culture_perenne'] = culturePerenne?.map((v) => v.toJson()).toList();
+      data['culture_perenne'] = culturePerenne?.map((v) => v).toList();
     }
     if (cultureSaisonniere != null) {
       data['culture_saisonniere'] =
-          cultureSaisonniere?.map((v) => v.toJson()).toList();
+          cultureSaisonniere?.map((v) => v).toList();
     }
     return data;
   }

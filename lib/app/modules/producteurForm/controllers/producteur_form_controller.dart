@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:mobile_report/app/data/db_provider.dart';
+import 'package:mobile_report/app/data/hclient_provider.dart';
 import 'package:mobile_report/app/data/models/producteur_model.dart';
 import 'package:mobile_report/app/data/providers/producteur_provider.dart';
 import 'package:dio/dio.dart';
@@ -8,44 +10,63 @@ import 'package:dio/dio.dart';
 class ProducteurFormController extends GetxController {
 
 
+  final HclientProvider hclientProvider = Get.find<HclientProvider>();
+  final DbProvider dbProvider = Get.find<DbProvider>();
+
   final formKey = GlobalKey<FormState>();
 
   final nom_controller = TextEditingController();
   final prenoms_controller = TextEditingController();
-  final Rx<Genre?> sexe_controller = Genre.HOMME.obs;
+  final Rx<String?> sexe_controller = 'M'.obs;
   final telephone_controller = TextEditingController();
   final date_naissance_controller = TextEditingController();
   final lieu_naissance_controller = TextEditingController();
   final RxList projects = [].obs;
   final RxList coops = [].obs;
-  //Rx<XFile?>? photo;
+  // Rx<XFile?>? photo;
+  final loading = false.obs;
 
   final cooperative_controller = TextEditingController();
+  Map<String, dynamic> selectedProject = {};
 
 
   void validerEtEnvoyer() async {
-        if (formKey.currentState?.validate() ?? false) {
+        try{
+          loading.value = true;
+          if (formKey.currentState?.validate() ?? false) {
             final producteur = Producteur(
-                nom: nom_controller.text,
-                prenom: prenoms_controller.text,
-                sexe: sexe_controller.value,
-                telephone: telephone_controller.text,
-                dateNaissance: DateTime.parse(date_naissance_controller.text), // Assurez-vous que le format est correct
-                lieuNaissance: lieu_naissance_controller.text,
-                cooperative: int.tryParse(cooperative_controller.text), // Assurez-vous que c'est un entier
+              projet: selectedProject['id'],
+              nom: nom_controller.text,
+              prenom: prenoms_controller.text,
+              // todo: vérifier si le sexe est correct
+              sexe: 'M',
+              telephone: telephone_controller.text,
+              dateNaissance: DateTime.parse(date_naissance_controller.text), // Assurez-vous que le format est correct
+              lieuNaissance: lieu_naissance_controller.text,
+              cooperative: int.tryParse(cooperative_controller.text), // Assurez-vous que c'est un entier
             );
 
+            dbProvider.insertProducteur(producteur);
+            Get.back();
+            /*
             final provider = ProducteurProvider();
             final response = await provider.postProducteur(producteur);
 
             if (response.isOk) {
-                print("Producteur ajouté avec succès");
+              print("Producteur ajouté avec succès");
             } else {
-                print("Erreur lors de l'ajout du producteur: ${response.statusText} ${response.request!.url}");
+              print("Erreur lors de l'ajout du producteur: ${response.statusText} ${response.request!.url}");
             }
-        } else {
+
+             */
+          } else {
             // Gérer les erreurs de validation
             print("Le formulaire n'est pas valide");
+          }
+        }catch(e){
+          print("Erreur lors de l'ajout du producteur: $e");
+        }finally{
+          loading.value = false;
         }
     }
 
@@ -53,6 +74,7 @@ class ProducteurFormController extends GetxController {
   void onInit() async {
     super.onInit();
     await setupCoops();
+    selectedProject = Get.arguments;
   }
 
   @override
@@ -71,8 +93,9 @@ class ProducteurFormController extends GetxController {
   }
 
   Future<void> setupProjects() async {
-    final dio = Dio();
-    final response = await dio.get("https://traceagri.com/fr/api/projects/");
+
+    final response = await hclientProvider.client.get("/api/projects/");
+
     if(response.statusCode == 200){
       print(response.data);
       print(response.data.toString());
@@ -82,12 +105,12 @@ class ProducteurFormController extends GetxController {
   }
   Future<void> setupCoops() async {
     try{
-      final dio = Dio();
-      final response = await dio.get("https://traceagri.com/fr/api/cooperatives/");
+
+      final response = await hclientProvider.client.get("https://traceagri.com/fr/api/cooperatives/");
       if(response.statusCode == 200){
         print(response.data);
         print(response.data.toString());
-        projects.value = response.data;
+        coops.value = response.data;
         // print(" countries ${countries.value}");
       }
     }catch(e){

@@ -12,14 +12,8 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green[800],
-        onPressed: ()=>{
-          Get.toNamed(Routes.PRODUCTEUR_FORM)
-        },
-        child: Icon(Icons.add, color: Colors.white,),
-      ),
+      backgroundColor: Colors.grey[200],
+
 
       body: SafeArea(
         child: VStack([
@@ -82,15 +76,28 @@ class HomeView extends GetView<HomeController> {
               shrinkWrap: true,
               itemCount: controller.projects.length,
               itemBuilder: (context, index){
-                return ListTile(
-                  title: controller.projects[index]['name'].toString().text.make(),
-                  subtitle: controller.projects[index]['description'].toString().text.make(),
-                );
+                return getProjectView(controller.projects[index]);
               }
             )
           )
         ]).paddingAll(15),
       ),
+    );
+  }
+
+
+  Widget getProjectView(Map<String, dynamic> project){
+    return ListTile(
+      leading: Container(
+        padding: EdgeInsets.all(10),
+        child: Icon(Icons.folder, color: Colors.white,),
+      ).card.color(Colors.green[800]!).make(),
+      title: project['name'].toString().text.make(),
+      subtitle: project['description'].toString().text.gray800.make(),
+      trailing: Container(
+        child: Icon(Icons.chevron_right),
+      ),
+    ).card.white.make().onTap(()=>Get.toNamed(Routes.DETAIL_PROJECT, arguments: project)
     );
   }
 }

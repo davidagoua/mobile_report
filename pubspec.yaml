@@ -16,9 +16,19 @@ dependencies:
   dio: 5.7.0
   flutter: 
     sdk: flutter
+  pretty_dio_logger: ^1.4.0
+  sqflite: ^2.4.1
+  shared_preferences: ^2.3.3
+  objectbox_flutter_libs:
+  objectbox: ^4.0.3
+  path_provider: ^2.1.5
+  intl: ^0.19.0
+
 
 dev_dependencies: 
   flutter_lints: ^3.0.0
+  build_runner: ^2.1.4
+  objectbox_generator: any
   flutter_test: 
     sdk: flutter
 

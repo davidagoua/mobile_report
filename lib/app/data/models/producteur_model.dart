@@ -1,18 +1,35 @@
 import 'dart:io';
 
-enum Genre {HOMME,FEMME}
+import 'package:intl/intl.dart';
+import 'package:objectbox/objectbox.dart';
+
+enum Genre {
+  HOMME,
+  FEMME
+
+
+}
 
 
 
 
-
+@Entity()
 class Producteur {
+
+  @Id() int? id;
+
   String? nom;
   String? prenom;
-  Genre? sexe;
+
+
+  String? sexe;
   String? telephone;
+
+  @Property(type: PropertyType.date)
   DateTime? dateNaissance;
   String? lieuNaissance;
+
+  @Transient()
   File? photo;
   int? cooperative;
   int? projet;
@@ -44,9 +61,9 @@ class Producteur {
     final data = <String, dynamic>{};
     data['nom'] = nom;
     data['prenom'] = prenom;
-    data['sexe'] = sexe;
+    data['sexe'] = 'M';
     data['telephone'] = telephone;
-    data['date_naissance'] = dateNaissance;
+    data['date_naissance'] = (new DateFormat('YYYY-MM-DD')).format(dateNaissance!) ;
     data['lieu_naissance'] = lieuNaissance;
     data['photo'] = photo;
     data['cooperative'] = cooperative;

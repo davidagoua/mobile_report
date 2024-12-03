@@ -175,15 +175,15 @@ class ProducteurFormView extends GetView<ProducteurFormController> {
                   ),
                 )
               ]),
-              DropdownButtonFormField<Genre>(
+              DropdownButtonFormField<Map>(
                 decoration: getTFStyle('Sexe'),
-                items: Genre.values.map((Genre genre) {
-                  return DropdownMenuItem<Genre>(
+                items: [{'key':'F','value':'Femme'},{'key':'M', 'value':'Homme'}].map((Map genre) {
+                  return DropdownMenuItem<Map>(
                     value: genre,
-                    child: Text(genre.toString().split('.').last),
+                    child: Text(genre['value']),
                   );
                 }).toList(),
-                onChanged: (value) => controller.sexe_controller.value = value,
+                onChanged: (value) => controller.sexe_controller.value = value!['key'],
                 validator: (value) => value == null ? 'Veuillez sélectionner un sexe' : null,
               ),
               TextFormField(
@@ -230,8 +230,8 @@ class ProducteurFormView extends GetView<ProducteurFormController> {
                   decoration: getTFStyle('Coopérative'),
                   items: controller.coops.map((coop) {
                     return DropdownMenuItem<String>(
-                      value: coop.nom,
-                      child: Text(coop.nom),
+                      value: coop['id'].toString(),
+                      child: Text(coop['nom']),
                     );
                   }).toList(),
                   onChanged: (value) => controller.cooperative_controller.text = value!,
@@ -244,7 +244,7 @@ class ProducteurFormView extends GetView<ProducteurFormController> {
                 blockButton: true,
                 onPressed: controller.validerEtEnvoyer,
                 color: Theme.of(context).primaryColor,
-                child: "Enrégistrer".text.make().pSymmetric(h: 3),
+                child: Obx(() => controller.loading.value ? const CircularProgressIndicator(color: Vx.white) : 'Enregistrer'.text.make()),
               )
               // Ajoutez des champs pour photo, cooperative et projet si nécessaire
               
